@@ -23,14 +23,14 @@ resource "aws_subnet" "aft_vpc_private_subnet_01" {
   }
 }
 
-resource "aws_subnet" "aft_vpc_private_subnet_02" {
-  vpc_id            = aws_vpc.aft_vpc.id
-  cidr_block        = var.aft_vpc_private_subnet_02_cidr
-  availability_zone = element(data.aws_availability_zones.available.names, 1)
-  tags = {
-    Name = "aft-vpc-private-subnet-02"
-  }
-}
+# resource "aws_subnet" "aft_vpc_private_subnet_02" {
+#   vpc_id            = aws_vpc.aft_vpc.id
+#   cidr_block        = var.aft_vpc_private_subnet_02_cidr
+#   availability_zone = element(data.aws_availability_zones.available.names, 1)
+#   tags = {
+#     Name = "aft-vpc-private-subnet-02"
+#   }
+# }
 
 resource "aws_subnet" "aft_vpc_public_subnet_01" {
   vpc_id            = aws_vpc.aft_vpc.id
@@ -209,7 +209,7 @@ resource "aws_vpc_endpoint" "s3" {
   vpc_id            = aws_vpc.aft_vpc.id
   vpc_endpoint_type = "Gateway"
   service_name      = "com.amazonaws.${data.aws_region.aft-management.name}.s3"
-  route_table_ids   = [aws_route_table.aft_vpc_private_subnet_01.id, aws_route_table.aft_vpc_private_subnet_02.id, aws_route_table.aft_vpc_public_subnet_01.id]
+  route_table_ids   = [aws_route_table.aft_vpc_private_subnet_01.id, aws_route_table.aft_vpc_public_subnet_01.id]
 }
 
 resource "aws_vpc_endpoint" "dynamodb" {
@@ -218,7 +218,7 @@ resource "aws_vpc_endpoint" "dynamodb" {
   vpc_id            = aws_vpc.aft_vpc.id
   vpc_endpoint_type = "Gateway"
   service_name      = "com.amazonaws.${data.aws_region.aft-management.name}.dynamodb"
-  route_table_ids   = [aws_route_table.aft_vpc_private_subnet_01.id, aws_route_table.aft_vpc_private_subnet_02.id, aws_route_table.aft_vpc_public_subnet_01.id]
+  route_table_ids   = [aws_route_table.aft_vpc_private_subnet_01.id, aws_route_table.aft_vpc_public_subnet_01.id]
 }
 
 #########################################
