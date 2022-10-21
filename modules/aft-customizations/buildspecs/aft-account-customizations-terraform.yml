@@ -15,7 +15,9 @@ phases:
       - TF_DISTRIBUTION=$(aws ssm get-parameter --name "/aft/config/terraform/distribution" --query "Parameter.Value" --output text)
       - CT_MGMT_REGION=$(aws ssm get-parameter --name "/aft/config/ct-management-region" --query "Parameter.Value" --output text)
       - AFT_MGMT_ACCOUNT=$(aws ssm get-parameter --name "/aft/account/aft-management/account-id" --query "Parameter.Value" --output text)
+      - CT_MGMT_ACCOUNT=$(aws ssm get-parameter --name "/aft/account/ct-management/account-id" --query "Parameter.Value" --output text)
       - AFT_EXEC_ROLE_ARN=arn:$AWS_PARTITION:iam::$AFT_MGMT_ACCOUNT:role/AWSAFTExecution
+      - CT_EXEC_ROLE_ARN=arn:$AWS_PARTITION:iam::$CT_MGMT_ACCOUNT:role/AWSAFTExecution
       - VENDED_EXEC_ROLE_ARN=arn:$AWS_PARTITION:iam::$VENDED_ACCOUNT_ID:role/AWSAFTExecution
       - AFT_ADMIN_ROLE_NAME=$(aws ssm get-parameter --name /aft/resources/iam/aft-administrator-role-name | jq --raw-output ".Parameter.Value")
       - AFT_ADMIN_ROLE_ARN=arn:$AWS_PARTITION:iam::$AFT_MGMT_ACCOUNT:role/$AFT_ADMIN_ROLE_NAME
@@ -125,7 +127,7 @@ phases:
             TF_CONFIG_PATH="./temp_configuration_file.tar.gz"
 
             cd $DEFAULT_PATH/$CUSTOMIZATION/terraform
-            for f in *.jinja; do jinja2 $f -D timestamp="$TIMESTAMP" -D provider_region=$CT_MGMT_REGION -D tf_distribution_type=$TF_DISTRIBUTION -D aft_admin_role_arn=$AFT_EXEC_ROLE_ARN -D target_admin_role_arn=$VENDED_EXEC_ROLE_ARN -D terraform_org_name=$TF_ORG_NAME -D terraform_workspace_name=$TF_WORKSPACE_NAME  >> ./$(basename $f .jinja).tf; done
+            for f in *.jinja; do jinja2 $f -D timestamp="$TIMESTAMP" -D provider_region=$CT_MGMT_REGION -D tf_distribution_type=$TF_DISTRIBUTION -D aft_admin_role_arn=$AFT_EXEC_ROLE_ARN -D target_admin_role_arn=$VENDED_EXEC_ROLE_ARN -D terraform_org_name=$TF_ORG_NAME -D terraform_workspace_name=$TF_WORKSPACE_NAME -D ct_admin_role_arn=$CT_EXEC_ROLE_ARN >> ./$(basename $f .jinja).tf; done
             for f in *.tf; do echo "\n \n"; echo $f; cat $f; done
             
             cd $DEFAULT_PATH/$CUSTOMIZATION
