@@ -62,13 +62,13 @@ resource "aws_cloudwatch_event_target" "aft_invoke_aft_account_provisioning_fram
 }
 
 ######### Account Processor Lambda #########
-resource "aws_cloudwatch_event_rule" "aft_account_request_processor" {
-  name                = "aft-lambda-account-request-processor"
-  description         = "Trigger Lambda"
-  schedule_expression = "rate(5 minutes)"
-}
+# resource "aws_cloudwatch_event_rule" "aft_account_request_processor" {
+#   name                = "aft-lambda-account-request-processor"
+#   description         = "Trigger Lambda"
+#   schedule_expression = "rate(5 minutes)"
+# }
 
-resource "aws_cloudwatch_event_target" "aft_account_request_processor" {
-  arn  = aws_lambda_function.aft_account_request_processor.arn
-  rule = aws_cloudwatch_event_rule.aft_account_request_processor.id
-}
+# resource "aws_cloudwatch_event_target" "aft_account_request_processor" {
+#   arn  = aws_lambda_function.aft_account_request_processor.arn
+#   rule = aws_cloudwatch_event_rule.aft_account_request_processor.id
+# }
