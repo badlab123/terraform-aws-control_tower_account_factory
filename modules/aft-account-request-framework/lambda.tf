@@ -140,13 +140,13 @@ resource "aws_lambda_function" "aft_account_request_processor" {
 
 }
 
-resource "aws_lambda_permission" "aft_account_request_processor" {
-  statement_id  = "AllowExecutionFromCloudWatch"
-  action        = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.aft_account_request_processor.function_name
-  principal     = "events.amazonaws.com"
-  source_arn    = aws_cloudwatch_event_rule.aft_account_request_processor.arn
-}
+# resource "aws_lambda_permission" "aft_account_request_processor" {
+#   statement_id  = "AllowExecutionFromCloudWatch"
+#   action        = "lambda:InvokeFunction"
+#   function_name = aws_lambda_function.aft_account_request_processor.function_name
+#   principal     = "events.amazonaws.com"
+#   source_arn    = aws_cloudwatch_event_rule.aft_account_request_processor.arn
+# }
 
 resource "aws_cloudwatch_log_group" "aft_account_request_processor" {
   name              = "/aws/lambda/${aws_lambda_function.aft_account_request_processor.function_name}"

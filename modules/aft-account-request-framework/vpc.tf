@@ -57,10 +57,10 @@ resource "aws_subnet" "aft_vpc_public_subnet_02" {
 
 resource "aws_route_table" "aft_vpc_private_subnet_01" {
   vpc_id = aws_vpc.aft_vpc.id
-  route {
-    cidr_block     = "0.0.0.0/0"
-    nat_gateway_id = aws_nat_gateway.aft-vpc-natgw-01.id
-  }
+  # route {
+  #   cidr_block     = "0.0.0.0/0"
+  #   nat_gateway_id = aws_nat_gateway.aft-vpc-natgw-01.id
+  # }
   tags = {
     Name = "aft-vpc-private-subnet-01"
   }
